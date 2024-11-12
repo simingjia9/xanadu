@@ -1,239 +1,144 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>爬宠收益评估</title>
+    <title>仙乐爬宠交易所</title>
     <style>
-        /* 全局样式 */
+        /* 页面整体设置为深色背景和白色文字 */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #f5f5f7;
-            color: #1d1d1f;
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
             padding: 20px;
-            overflow: hidden;
-            transition: opacity 0.8s ease; /* 淡出效果 */
         }
 
-        /* 容器样式 */
+        /* 表单和结果容器样式 */
         .container {
-            background-color: white;
+            max-width: 400px;
             width: 100%;
-            max-width: 500px;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            text-align: center;
-            opacity: 1;
-            transition: opacity 0.8s ease; /* 淡入效果 */
-        }
-
-        /* 结果页面样式 */
-        .result-container {
-            display: none;
-            text-align: center;
-            opacity: 0;
-            margin-top: 40px;
-        }
-
-        .percentage-animation {
-            font-size: 36px;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-
-        /* 标题样式 */
-        h1 {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 24px;
-            color: #333;
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
         h2 {
-            font-size: 22px;
-            font-weight: 600;
-            color: #333;
+            text-align: center;
+            color: #ffffff;
         }
 
-        h3 {
-            font-size: 20px;
-            font-weight: 500;
-            color: #333;
-            margin-top: 20px;  /* 增大标题和百分比之间的间距 */
-        }
-
-        /* 输入框和标签样式 */
         label {
-            font-size: 16px;
             display: block;
-            margin-bottom: 8px;
-            text-align: left;
+            margin-top: 10px;
+            color: #b0b0b0;
         }
 
-        select,
-        input[type="number"],
-        input[type="date"] {
+        input, select {
             width: 100%;
-            padding: 12px;
-            margin: 8px 0 16px;
-            border: 1px solid #d2d2d7;
-            border-radius: 8px;
-            font-size: 16px;
-            box-sizing: border-box;
+            padding: 10px;
+            margin-top: 5px;
+            border: none;
+            border-radius: 4px;
+            background-color: #333333;
+            color: #ffffff;
         }
 
-        /* 提交按钮样式 */
         button {
             width: 100%;
-            padding: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            background-color: #0071e3;
-            color: white;
+            padding: 10px;
+            margin-top: 20px;
             border: none;
-            border-radius: 8px;
+            border-radius: 4px;
+            background-color: #6200ee;
+            color: #ffffff;
+            font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s;
         }
 
         button:hover {
-            background-color: #005bb5;
+            background-color: #3700b3;
         }
 
-        /* 结果显示样式 */
-        #results p {
-            margin: 8px 0;
-            padding: 8px;
-            border: 1px solid #d2d2d7;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-            font-size: 16px;
+        .result-container {
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
         }
 
-        /* 箭头图标 */
+        .percentage {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
         .arrow-up {
             color: red;
-            margin-right: 10px;
         }
 
         .arrow-down {
             color: green;
-            margin-right: 10px;
         }
     </style>
 </head>
 <body>
-    <div class="container" id="formContainer">
-        <h1>爬宠收益评估</h1>
-        
-        <!-- 输入表单 -->
-        <form id="reptileForm">
-            <label for="primaryType">爬宠一级种类</label>
-            <select id="primaryType" onchange="updateSecondaryType()">
-                <option value="">请选择一级种类</option>
+    <div class="container">
+        <!-- 表单容器 -->
+        <div id="formContainer">
+            <h2>仙乐爬宠交易所</h2>
+            <label for="primaryType">一级种类</label>
+            <select id="primaryType">
+                <!-- 示例选项，实际使用时将这些替换为完整的爬宠种类列表 -->
                 <option value="蜥蜴">蜥蜴</option>
                 <option value="蛇">蛇</option>
                 <option value="龟">龟</option>
-                <option value="其他">其他</option>
-                <option value="肥尾守宫">肥尾守宫</option>
-                <option value="牛蛇">牛蛇</option>
-                <option value="加州王蛇">加州王蛇</option>
-                <option value="鬃狮蜥">鬃狮蜥</option>
-                <option value="玉米蛇">玉米蛇</option>
-                <option value="睫角守宫">睫角守宫</option>
             </select>
-            
-            <label for="secondaryType">爬宠二级种类</label>
-            <select id="secondaryType">
-                <option value="">请选择二级种类</option>
-            </select>
-            
-            <label for="purchaseDate">购买时间</label>
-            <input type="date" id="purchaseDate">
-            
-            <label for="purchasePrice">购买价格</label>
-            <input type="number" id="purchasePrice" placeholder="请输入购买价格" step="0.01">
-            
-            <button type="button" onclick="submitForm()">提交</button>
-        </form>
-    </div>
 
-    <!-- 动画展示百分比 -->
-    <div class="container result-container" id="resultContainer">
-        <h2>评估结果</h2>
-        <h3 id="bargainTitle">捡漏水平</h3>
-        <p id="bargainLevel" class="percentage-animation">捡漏水平: </p>
-        
-        <h3 id="appreciationTitle">升值程度</h3>
-        <p id="appreciationLevel" class="percentage-animation">升值程度: </p>
-        
-        <h3 id="profitTitle">收益水平</h3>
-        <p id="profitLevel" class="percentage-animation">收益水平: </p>
+            <label for="secondaryType">二级种类</label>
+            <select id="secondaryType">
+                <!-- 示例选项，实际使用时将这些替换为完整的二级种类列表 -->
+                <option value="鬃狮蜥">鬃狮蜥</option>
+                <option value="绿鬣蜥">绿鬣蜥</option>
+                <option value="豹纹守宫">豹纹守宫</option>
+            </select>
+
+            <label for="purchaseDate">购买时间</label>
+            <input type="date" id="purchaseDate" required>
+
+            <label for="purchasePrice">购买价格</label>
+            <input type="number" id="purchasePrice" placeholder="请输入价格" required>
+
+            <button onclick="submitForm()">提交</button>
+        </div>
+
+        <!-- 结果容器 -->
+        <div id="resultContainer" class="result-container">
+            <h2>爬宠理财高手</h2>
+            <p class="percentage" id="bargainLevel">捡漏水平: </p>
+            <p class="percentage" id="appreciationLevel">升值程度: </p>
+            <p class="percentage" id="profitLevel">收益水平: </p>
+        </div>
     </div>
 
     <script>
-        // 模拟的市场数据
-        const marketData = {
-            "蜥蜴": {
-                "鬃狮蜥": { "当时市场平均价": 500, "当前市场平均价": 800 },
-                "绿鬣蜥": { "当时市场平均价": 300, "当前市场平均价": 600 },
-                "豹纹守宫": { "当时市场平均价": 150, "当前市场平均价": 300 },
-                "科尔特蜥": { "当时市场平均价": 250, "当前市场平均价": 450 }
-            },
-            "蛇": {
-                "玉米蛇": { "当时市场平均价": 400, "当前市场平均价": 700 },
-                "王蛇": { "当时市场平均价": 600, "当前市场平均价": 900 },
-                "眼镜蛇": { "当时市场平均价": 800, "当前市场平均价": 1300 },
-                "蛇纹蛇": { "当时市场平均价": 500, "当前市场平均价": 800 },
-                "牛蛇": { "当时市场平均价": 350, "当前市场平均价": 600 },
-                "加州王蛇": { "当时市场平均价": 550, "当前市场平均价": 850 }
-            },
-            "龟": {
-                "红耳龟": { "当时市场平均价": 100, "当前市场平均价": 180 },
-                "软壳龟": { "当时市场平均价": 200, "当前市场平均价": 350 }
-            },
-            "其他": {
-                "幻象龙": { "当时市场平均价": 1000, "当前市场平均价": 1500 }
-            },
-            "肥尾守宫": {
-                "一般": { "当时市场平均价": 250, "当前市场平均价": 400 }
-            },
-            "睫角守宫": {
-                "一般": { "当时市场平均价": 300, "当前市场平均价": 500 }
-            }
-        };
-
-        // 更新二级种类选项
-        function updateSecondaryType() {
-            const primaryType = document.getElementById("primaryType").value;
-            const secondaryTypeSelect = document.getElementById("secondaryType");
-
-            // 清空现有的二级种类选项
-            secondaryTypeSelect.innerHTML = '<option value="">请选择二级种类</option>';
-
-            if (primaryType && marketData[primaryType]) {
-                const secondaryTypes = Object.keys(marketData[primaryType]);
-                secondaryTypes.forEach(type => {
-                    const option = document.createElement("option");
-                    option.value = type;
-                    option.textContent = type;
-                    secondaryTypeSelect.appendChild(option);
-                });
-            }
-        }
-
-        // 提交表单的函数，包含动画效果
         function submitForm() {
             const primaryType = document.getElementById("primaryType").value;
             const secondaryType = document.getElementById("secondaryType").value;
             const purchaseDate = document.getElementById("purchaseDate").value;
             const purchasePrice = parseFloat(document.getElementById("purchasePrice").value);
+
+            // 示例市场数据
+            const marketData = {
+                "蜥蜴": { "鬃狮蜥": { "当时市场平均价": 350, "当前市场平均价": 500 } },
+                "蛇": { "玉米蛇": { "当时市场平均价": 150, "当前市场平均价": 200 } },
+                "龟": { "红耳龟": { "当时市场平均价": 80, "当前市场平均价": 100 } }
+            };
 
             const marketInfo = marketData[primaryType]?.[secondaryType];
             if (!marketInfo) {
@@ -248,30 +153,21 @@
             const appreciationLevel = Math.round((averageCurrentPrice - averagePastPrice) / averagePastPrice * 100);
             const profitLevel = Math.round((appreciationLevel / ((averageCurrentPrice - averagePastPrice) / averagePastPrice)) * 100);
 
-            // 显示结果及动画
             document.getElementById('bargainLevel').innerText = `捡漏水平: ${bargainLevel}%`;
             animatePercentage('bargainLevel', 0, bargainLevel);
 
-            document.getElementById('appreciationLevel').innerText = `升值程度: `;
-            if (appreciationLevel > 0) {
-                document.getElementById('appreciationLevel').innerHTML = `<span class="arrow-up">↑</span>${appreciationLevel}%`;
-                document.getElementById('appreciationLevel').style.color = 'red';
-            } else {
-                document.getElementById('appreciationLevel').innerHTML = `<span class="arrow-down">↓</span>${appreciationLevel}%`;
-                document.getElementById('appreciationLevel').style.color = 'green';
-            }
+            document.getElementById('appreciationLevel').innerHTML = `升值程度: ${appreciationLevel > 0 ? '<span class="arrow-up">↑</span>' : '<span class="arrow-down">↓</span>'}${Math.abs(appreciationLevel)}%`;
+            document.getElementById('appreciationLevel').style.color = appreciationLevel > 0 ? 'red' : 'green';
 
             document.getElementById('profitLevel').innerText = `收益水平: ${profitLevel}%`;
             animatePercentage('profitLevel', 0, profitLevel);
 
-            // 隐藏表单并显示结果
             document.getElementById('formContainer').style.display = 'none';
             const resultContainer = document.getElementById('resultContainer');
             resultContainer.style.display = 'block';
-            resultContainer.style.opacity = '1'; // 淡入
+            resultContainer.style.opacity = '1';
         }
 
-        // 动画效果：数字逐渐从0到目标值
         function animatePercentage(id, start, end) {
             let current = start;
             const step = (end - start) / 100;
