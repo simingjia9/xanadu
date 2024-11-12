@@ -5,180 +5,273 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>仙乐爬宠交易所</title>
     <style>
-        /* 页面整体设置为深色背景和白色文字 */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #121212;
-            color: #ffffff;
+        /* 基础样式 */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
+            height: 100vh;
+            transition: opacity 1s;
         }
-
-        /* 表单和结果容器样式 */
+        .hidden { display: none; }
         .container {
-            max-width: 400px;
-            width: 100%;
-            background-color: #1e1e1e;
+            width: 80%;
+            max-width: 600px;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        h2 {
             text-align: center;
-            color: #ffffff;
+            position: relative;
         }
-
+        /* 标题样式 */
+        .main-title {
+            font-weight: 900;
+            font-size: 3.0em;
+            text-align: center;
+            color: #ff69b4;
+            margin-bottom: 20px;
+            margin-top: 150px; /* 调整标题下移 */
+        }
+        h1 {
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #ff69b4;
+        }
+        .input-group {
+            margin: 15px 0;
+            text-align: left;
+        }
         label {
+            font-weight: 500;
+            margin-bottom: 8px;
             display: block;
+        }
+        select, input[type="number"], input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 8px;
+            background-color: #1c1c1e;
+            color: #fff;
+            border-radius: 8px;
+            border: 1px solid #333;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        select:focus, input[type="number"]:focus, input[type="date"]:focus {
+            border-color: #ff69b4;
+        }
+        .radio-group {
+            display: flex;
+            justify-content: space-around;
             margin-top: 10px;
-            color: #b0b0b0;
         }
-
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: none;
-            border-radius: 4px;
-            background-color: #333333;
-            color: #ffffff;
+        .radio-group label {
+            font-weight: normal;
         }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 20px;
-            border: none;
-            border-radius: 4px;
-            background-color: #6200ee;
-            color: #ffffff;
+        .submit-btn {
+            background-color: #ff69b4;
+            color: #fff;
             font-weight: bold;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 20px;
             cursor: pointer;
+            margin-top: 20px;
+            font-size: 18px;
             transition: background-color 0.3s;
         }
-
-        button:hover {
-            background-color: #3700b3;
+        .submit-btn:hover {
+            background-color: #ff85c0;
         }
-
-        .result-container {
-            text-align: center;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-        }
-
-        .percentage {
-            font-size: 24px;
+        /* 结果页面样式 */
+        .data-section {
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            margin-top: 15px;
+            font-size: 1.2em;
             font-weight: bold;
-            margin: 10px 0;
         }
-
-        .arrow-up {
-            color: red;
+        .data-label { 
+            color: #fff; 
+            width: 50%;
+            text-align: left;
         }
-
-        .arrow-down {
-            color: green;
+        .data-value {
+            font-size: 0.7em; /* 调整字体大小 */
+            font-weight: bold;
+            color: #ff6347;
+            text-align: left;
+            transition: color 0.3s;
         }
+        .footer {
+           margin-top: 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+        .transition { opacity: 0; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- 表单容器 -->
-        <div id="formContainer">
-            <h2>仙乐爬宠交易所</h2>
-            <label for="primaryType">一级种类</label>
-            <select id="primaryType">
-                <!-- 示例选项，实际使用时将这些替换为完整的爬宠种类列表 -->
-                <option value="蜥蜴">蜥蜴</option>
+
+    <!-- 页面1: 信息提交页面 -->
+    <div id="formPage" class="container">
+        <div class="main-title">仙乐爬宠交易所</div>
+        <h1>仙乐爬宠交易所</h1>
+        
+        <!-- 种类选择 -->
+        <div class="input-group">
+            <label>种类</label>
+            <select id="speciesSelect" onchange="updateDetailsOptions()">
+                <option value="">请选择</option>
                 <option value="蛇">蛇</option>
-                <option value="龟">龟</option>
+                <option value="守宫">守宫</option>
+                <option value="蜥蜴">蜥蜴</option>
             </select>
-
-            <label for="secondaryType">二级种类</label>
-            <select id="secondaryType">
-                <!-- 示例选项，实际使用时将这些替换为完整的二级种类列表 -->
-                <option value="鬃狮蜥">鬃狮蜥</option>
-                <option value="绿鬣蜥">绿鬣蜥</option>
-                <option value="豹纹守宫">豹纹守宫</option>
+        </div>
+        
+        <!-- 详细种类选择 -->
+        <div class="input-group">
+            <label>详细种类</label>
+            <select id="detailSelect">
+                <option value="">请选择</option>
             </select>
-
-            <label for="purchaseDate">购买时间</label>
-            <input type="date" id="purchaseDate" required>
-
-            <label for="purchasePrice">购买价格</label>
-            <input type="number" id="purchasePrice" placeholder="请输入价格" required>
-
-            <button onclick="submitForm()">提交</button>
         </div>
-
-        <!-- 结果容器 -->
-        <div id="resultContainer" class="result-container">
-            <h2>爬宠理财高手</h2>
-            <p class="percentage" id="bargainLevel">捡漏水平: </p>
-            <p class="percentage" id="appreciationLevel">升值程度: </p>
-            <p class="percentage" id="profitLevel">收益水平: </p>
+        
+        <!-- 基因选择 -->
+        <div class="input-group">
+            <label>基因</label>
+            <select>
+                <option>白化</option>
+                <option>极端白化</option>
+                <option>白边</option>
+            </select>
         </div>
+        
+        <!-- het选择 -->
+        <div class="input-group">
+            <label>het</label>
+            <select>
+                <option>白化</option>
+                <option>极端白化</option>
+                <option>白边</option>
+            </select>
+        </div>
+        
+        <!-- 性别选择 -->
+        <div class="input-group">
+            <label>性别</label>
+            <div class="radio-group">
+                <label><input type="radio" name="gender" value="公"> 公</label>
+                <label><input type="radio" name="gender" value="母"> 母</label>
+            </div>
+        </div>
+        
+        <!-- 年龄选择 -->
+        <div class="input-group">
+            <label>年龄</label>
+            <div class="radio-group">
+                <label><input type="radio" name="age" value="苗子"> 苗子</label>
+                <label><input type="radio" name="age" value="亚成"> 亚成</label>
+                <label><input type="radio" name="age" value="成体"> 成体</label>
+            </div>
+        </div>
+        
+        <!-- 购买时间 -->
+        <div class="input-group">
+            <label>购买时间</label>
+            <input type="date">
+        </div>
+        
+        <!-- 购买价格 -->
+        <div class="input-group">
+            <label>购买价格</label>
+            <input type="number" placeholder="请输入价格">
+        </div>
+        
+        <!-- 提交按钮 -->
+        <button class="submit-btn" onclick="submitForm()">立刻评估</button>
+        
+        <!-- 底部标语 -->
+        <div class="footer">Power by Xanadu Reptile</div>
+    </div>
+
+    <!-- 页面2: 结果展示页面 -->
+    <div id="resultPage" class="container hidden">
+        <h1>理财专家！</h1>
+        
+        <!-- 结果展示部分 -->
+        <div class="data-section">
+            <span class="data-label">捡漏水平</span>
+            <span class="data-value">极端优秀</span>
+        </div>
+        <div class="data-section">
+            <span class="data-label">升值幅度</span>
+            <span class="data-value" id="appreciationValue">1%</span>
+        </div>
+        <div class="data-section">
+            <span class="data-label">收益水平</span>
+            <span class="data-value">领先98.21%的玩家</span>
+        </div>
+        
+        <!-- 底部标语 -->
+        <div class="footer">Power by Xanadu Reptile</div>
     </div>
 
     <script>
-        function submitForm() {
-            const primaryType = document.getElementById("primaryType").value;
-            const secondaryType = document.getElementById("secondaryType").value;
-            const purchaseDate = document.getElementById("purchaseDate").value;
-            const purchasePrice = parseFloat(document.getElementById("purchasePrice").value);
+        // 关联下拉框选项
+        const detailsOptions = {
+            "蛇": ["玉米蛇", "加州王蛇", "佛州王蛇", "棕榈", "鼠蛇"],
+            "守宫": ["睫角守宫", "肥尾守宫", "豹纹守宫"],
+            "蜥蜴": ["鬃狮蜥", "绿鬣蜥"]
+        };
 
-            // 示例市场数据
-            const marketData = {
-                "蜥蜴": { "鬃狮蜥": { "当时市场平均价": 350, "当前市场平均价": 500 } },
-                "蛇": { "玉米蛇": { "当时市场平均价": 150, "当前市场平均价": 200 } },
-                "龟": { "红耳龟": { "当时市场平均价": 80, "当前市场平均价": 100 } }
-            };
-
-            const marketInfo = marketData[primaryType]?.[secondaryType];
-            if (!marketInfo) {
-                alert("请填写完整的表单。");
-                return;
+        function updateDetailsOptions() {
+            const species = document.getElementById("speciesSelect").value;
+            const detailSelect = document.getElementById("detailSelect");
+            detailSelect.innerHTML = '<option value="">请选择</option>';
+            
+            if (detailsOptions[species]) {
+                detailsOptions[species].forEach(option => {
+                    const opt = document.createElement("option");
+                    opt.value = option;
+                    opt.innerText = option;
+                    detailSelect.appendChild(opt);
+                });
             }
-
-            const averagePastPrice = marketInfo["当时市场平均价"];
-            const averageCurrentPrice = marketInfo["当前市场平均价"];
-
-            const bargainLevel = Math.round((averagePastPrice - purchasePrice) / averagePastPrice * 100);
-            const appreciationLevel = Math.round((averageCurrentPrice - averagePastPrice) / averagePastPrice * 100);
-            const profitLevel = Math.round((appreciationLevel / ((averageCurrentPrice - averagePastPrice) / averagePastPrice)) * 100);
-
-            document.getElementById('bargainLevel').innerText = `捡漏水平: ${bargainLevel}%`;
-            animatePercentage('bargainLevel', 0, bargainLevel);
-
-            document.getElementById('appreciationLevel').innerHTML = `升值程度: ${appreciationLevel > 0 ? '<span class="arrow-up">↑</span>' : '<span class="arrow-down">↓</span>'}${Math.abs(appreciationLevel)}%`;
-            document.getElementById('appreciationLevel').style.color = appreciationLevel > 0 ? 'red' : 'green';
-
-            document.getElementById('profitLevel').innerText = `收益水平: ${profitLevel}%`;
-            animatePercentage('profitLevel', 0, profitLevel);
-
-            document.getElementById('formContainer').style.display = 'none';
-            const resultContainer = document.getElementById('resultContainer');
-            resultContainer.style.display = 'block';
-            resultContainer.style.opacity = '1';
         }
 
-        function animatePercentage(id, start, end) {
-            let current = start;
-            const step = (end - start) / 100;
-            const interval = setInterval(function() {
-                current += step;
-                if (current >= end) {
-                    current = end;
+        // 提交表单并切换页面
+        function submitForm() {
+            document.getElementById("formPage").classList.add("transition");
+            setTimeout(() => {
+                document.getElementById("formPage").classList.add("hidden");
+                document.getElementById("resultPage").classList.remove("hidden");
+                document.getElementById("resultPage").classList.remove("transition");
+                animateAppreciationValue();
+            }, 1000);  // 1秒过渡效果
+        }
+
+        // 动态数值增长效果
+        function animateAppreciationValue() {
+            const appreciationValueElement = document.getElementById("appreciationValue");
+            let value = 1;
+            const target = 152;
+            const interval = setInterval(() => {
+                if (value >= target) {
                     clearInterval(interval);
+                } else {
+                    value++;
+                    appreciationValueElement.innerText = value + "%";
                 }
-                document.getElementById(id).innerText = `${Math.round(current)}%`;
-            }, 10);
+            }, 10); // 每次增加的时间间隔
         }
     </script>
 </body>
